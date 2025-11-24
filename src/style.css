@@ -1,4 +1,6 @@
-/* reset */
+/* =========================================
+   RESET & ROOT
+========================================= */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -8,43 +10,53 @@
 :root {
   --bg: #05060a;
   --bg-alt: #0a0d14;
+
   --accent: #f9f1ff;
+
   --seed: #f3d17b;
   --stem: #82ffb4;
+
   --odd: #ff4b8a;
   --eye: #f2fbff;
+
   --text-main: #f5f5f7;
   --text-sub: #9da0b1;
 }
 
+/* =========================================
+   BODY + CANVAS WRAPPER
+========================================= */
 body {
   min-height: 100vh;
   display: flex;
   margin-top: 30px;
   justify-content: center;
-  background:
-    radial-gradient(circle at top, #171c32 0, #05060a 55%);
+  background: radial-gradient(circle at top, #171c32 0, #05060a 55%);
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
     sans-serif;
   color: var(--text-main);
 }
 
-/* main card */
 .canvas {
   width: min(420px, 100vw - 32px);
   height: min(600px, 100vh - 32px);
+
   padding: 20px 20px 18px;
   border-radius: 28px;
+
   background: radial-gradient(circle at top, #151725 0, var(--bg-alt) 60%);
   box-shadow:
     0 24px 60px rgba(0, 0, 0, 0.7),
     0 0 0 1px rgba(255, 255, 255, 0.04);
+
   display: flex;
   flex-direction: column;
   gap: 14px;
 }
 
-/* header */
+/* =========================================
+   HEADER
+========================================= */
 .header {
   text-align: left;
 }
@@ -60,187 +72,566 @@ body {
   color: var(--text-sub);
 }
 
-/* grow area */
+/* =========================================
+   GROW AREA
+========================================= */
 .grow-area {
   flex: 1;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
+
   cursor: pointer;
+  position: relative;
 }
 
-/* tree wrapper */
 .tree-wrap {
-  position: relative;
   width: 180px;
   height: 260px;
+  position: relative;
+
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-/* ground */
+/* =========================================
+   GROUND
+========================================= */
 .ground {
   position: absolute;
-  bottom: 26px;
+  bottom: 0px;
+
   width: 120%;
-  height: 40px;
+  height: 50px;
+
   border-radius: 999px;
   background: radial-gradient(circle at top, #222836 0, #0b0d14 65%);
   box-shadow: 0 -6px 12px rgba(0, 0, 0, 0.4) inset;
+  z-index: 3;
 }
 
-/* tree base */
+/* =========================================
+   TREE (BASE STRUCTURE)
+========================================= */
 .tree {
   position: relative;
   width: 110px;
   height: 220px;
+
+  transform-origin: center bottom;
+
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  transform-origin: center bottom;
+
   transition: transform 0.15s ease-out;
 }
 
-/* pulse 효과 */
+/* --- 클릭 펄스 효과 --- */
 .tree.pulse {
   animation: treePulse 0.18s ease-out;
 }
 
 @keyframes treePulse {
-  0% {
-    transform: translateY(0) scale(1);
-  }
-  50% {
-    transform: translateY(-2px) scale(1.02);
-  }
-  100% {
-    transform: translateY(0) scale(1);
-  }
+  0% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-2px) scale(1.02); }
+  100% { transform: translateY(0) scale(1); }
 }
 
-/* stem core */
+/* =========================================
+   CORE (줄기 기본)
+========================================= */
 .core {
   position: absolute;
   bottom: 40px;
   left: 50%;
   transform: translateX(-50%);
+
   width: 20px;
   height: 30px;
+
   border-radius: 999px;
+
   background: radial-gradient(circle at top, #fff4c3 0, var(--seed) 60%);
   box-shadow:
     0 0 10px rgba(255, 236, 180, 0.6),
     0 0 0 1px rgba(0, 0, 0, 0.4);
+
   transition:
-    height 0.4s ease-out,
-    background 0.4s ease-out,
-    box-shadow 0.4s ease-out,
-    border-radius 0.4s ease-out;
+    height 0.4s ease,
+    width 0.4s ease,
+    border-radius 0.4s ease,
+    clip-path 0.4s ease,
+    background 0.4s ease,
+    transform 0.4s ease;
 }
 
-/* sprout */
+/* =========================================
+   SPROUT & BRANCH (초기 나무 형태)
+========================================= */
 .sprout {
   position: absolute;
   bottom: 72px;
   left: 50%;
+
   width: 40px;
   height: 24px;
+  transform: translateX(-50%) scale(0);
+
+  opacity: 0;
+
   border-radius: 999px;
   border: 2px solid var(--stem);
   border-color: var(--stem) transparent var(--stem) transparent;
-  transform-origin: center bottom;
-  transform: translateX(-50%) scale(0);
-  opacity: 0;
-  transition:
-    transform 0.35s ease-out,
-    opacity 0.35s ease-out;
+
+  transition: transform 0.35s ease-out, opacity 0.35s ease-out;
 }
 
-/* branches */
 .branch {
   position: absolute;
   bottom: 92px;
+
   width: 40px;
   height: 80px;
+  opacity: 0;
+
   border-radius: 999px;
   border: 2px solid var(--stem);
   border-color: var(--stem) transparent transparent transparent;
-  opacity: 0;
+
   transform-origin: bottom center;
+
   transition:
     opacity 0.4s ease-out,
     transform 0.4s ease-out;
 }
 
-.branch-left {
-  left: 16px;
-  transform: rotate(-26deg) scale(0.9);
-}
+.branch-left { left: 16px; transform: rotate(-26deg) scale(0.9); }
+.branch-right { right: 16px; transform: rotate(26deg) scale(0.9); }
 
-.branch-right {
-  right: 16px;
-  transform: rotate(26deg) scale(0.9);
-}
-
-/* odd elements for 후반부 변이 */
+/* =========================================
+   ODD OBJECTS (눈/구/기묘한 모양)
+========================================= */
 .odd {
   position: absolute;
   opacity: 0;
   transition:
-    opacity 0.45s ease-out,
-    transform 0.45s ease-out,
-    box-shadow 0.45s ease-out;
+    opacity 0.4s ease,
+    transform 0.4s ease,
+    filter 0.4s ease;
 }
 
-/* 떠다니는 구 */
-.odd-orb {
-  width: 28px;
-  height: 28px;
+/* odd 기본 위치 (상위 스테이지에서 항상 어느 정도 보이게) */
+.odd-1 {
+  top: 34px;
+  left: 6px;
+}
+
+.odd-2 {
+  top: 18px;
+  right: 10px;
+}
+
+.odd-3 {
+  top: 70px;
+  right: -4px;
+}
+
+/* 기본 odd 모양 (후반부에서 형태 변경됨) */
+.odd-1,
+.odd-2,
+.odd-3 {
+  width: 26px;
+  height: 26px;
   border-radius: 50%;
   background: radial-gradient(circle at top, #ffd4f0 0, var(--odd) 70%);
-  top: 46px;
-  left: 10px;
-  transform: scale(0.4) translateY(10px);
+  transform: scale(0.6);
 }
 
-/* 눈처럼 보이는 구조 */
-.odd-eye {
-  width: 40px;
-  height: 24px;
-  border-radius: 999px;
-  border: 2px solid var(--eye);
-  top: 30px;
-  right: 6px;
-  box-shadow: 0 0 16px rgba(178, 224, 255, 0.5);
-}
-
-.odd-eye::before {
-  content: "";
+/* =========================================
+   FLOATING FRUITS
+========================================= */
+.fruit {
   position: absolute;
-  inset: 4px 10px;
+  width: 14px;
+  height: 14px;
+
   border-radius: 999px;
-  background: radial-gradient(circle at center, #111824 0, #020308 70%);
+  background: radial-gradient(circle at top, #fff0f7 0, #ff92c7 70%);
+
+  opacity: 0;
+
+  /* 기본 스케일을 변수로 관리 */
+  --fruit-scale: 1;
+  transform: translate(0, 0) scale(var(--fruit-scale));
+
+  transition: opacity 0.35s ease, transform 0.35s ease;
 }
 
-.odd-eye::after {
-  content: "";
+
+/* float animations */
+@keyframes floatSoft {
+  0% {
+    transform: translateY(0) scale(var(--fruit-scale));
+  }
+  50% {
+    transform: translateY(-6px) scale(calc(var(--fruit-scale) * 1.04));
+  }
+  100% {
+    transform: translateY(0) scale(var(--fruit-scale));
+  }
+}
+
+@keyframes floatWide {
+  0% {
+    transform: translate(0, 0) scale(var(--fruit-scale));
+  }
+  50% {
+    transform: translate(4px, -10px) scale(calc(var(--fruit-scale) * 1.05));
+  }
+  100% {
+    transform: translate(0, 0) scale(var(--fruit-scale));
+  }
+}
+
+@keyframes floatCircle {
+  0% {
+    transform: translate(0, 0) scale(var(--fruit-scale));
+  }
+  25% {
+    transform: translate(4px, -4px) scale(calc(var(--fruit-scale) * 1.02));
+  }
+  50% {
+    transform: translate(0, -8px) scale(calc(var(--fruit-scale) * 1.05));
+  }
+  75% {
+    transform: translate(-4px, -4px) scale(calc(var(--fruit-scale) * 1.02));
+  }
+  100% {
+    transform: translate(0, 0) scale(var(--fruit-scale));
+  }
+}
+
+
+/* ========================= */
+/* FRUIT SHAPES & COLORS     */
+/* ========================= */
+
+/* 모양들 */
+.fruit.shape-round {
+  clip-path: circle(50%);
+}
+
+.fruit.shape-drop {
+  /* 물방울 */
+  clip-path: polygon(
+    50% 0%,
+    72% 22%,
+    84% 44%,
+    78% 68%,
+    64% 88%,
+    50% 100%,
+    36% 88%,
+    22% 68%,
+    16% 44%,
+    28% 22%
+  );
+}
+
+.fruit.shape-triangle {
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+}
+
+.fruit.shape-star {
+  /* 약간 찌그러진 별 */
+  clip-path: polygon(
+    50% 0%,
+    60% 32%,
+    100% 35%,
+    68% 56%,
+    78% 95%,
+    50% 72%,
+    22% 95%,
+    32% 56%,
+    0% 35%,
+    40% 32%
+  );
+}
+
+.fruit.shape-blob {
+  /* 말랑한 blob */
+  clip-path: polygon(
+    50% 0%,
+    70% 8%,
+    88% 26%,
+    94% 48%,
+    84% 72%,
+    64% 90%,
+    50% 100%,
+    36% 90%,
+    16% 72%,
+    6% 48%,
+    12% 26%,
+    30% 8%
+  );
+}
+
+/* 색들 */
+.fruit.color-pink {
+  background: radial-gradient(circle at 30% 20%, #ffe7f6 0%, #ff74c3 60%, #b4206f 100%);
+}
+
+.fruit.color-mint {
+  background: radial-gradient(circle at 30% 20%, #e6fff7 0%, #4dffd6 60%, #149c7a 100%);
+}
+
+.fruit.color-blue {
+  background: radial-gradient(circle at 30% 20%, #e5f0ff 0%, #6fa5ff 60%, #2752c6 100%);
+}
+
+.fruit.color-orange {
+  background: radial-gradient(circle at 30% 20%, #fff1dc 0%, #ff9e4f 60%, #c44a10 100%);
+}
+
+.fruit.color-purple {
+  background: radial-gradient(circle at 30% 20%, #f5e8ff 0%, #b878ff 60%, #6a32c8 100%);
+}
+
+/* ========================= */
+/* LINE OBJECTS (선형 오브젝트) */
+/* ========================= */
+.line {
   position: absolute;
-  top: 50%;
+  width: 4px;
+  height: 46px;
+
+  border-radius: 999px;
+  background: linear-gradient(to bottom, #ffffff, #9ff3ff);
+
+  opacity: 0;
+  transform-origin: center center;
+
+  filter: drop-shadow(0 0 6px rgba(200, 255, 255, 0.8));
+
+  transition:
+    opacity 0.35s ease,
+    transform 0.35s ease,
+    filter 0.35s ease;
+}
+
+/* 기본 위치 (코어 주변에 배치) */
+.line-1 { top: 18%; left: 18%; }
+.line-2 { top: 22%; right: 18%; }
+.line-3 { top: 40%; left: 10%; }
+.line-4 { top: 52%; right: 10%; }
+.line-5 { top: 70%; left: 16%; }
+
+/* 선형 오브젝트 애니메이션 */
+@keyframes lineFloatSoft {
+  0%   { transform: translateY(0)   scale(1); }
+  50%  { transform: translateY(-8px) scale(1.04); }
+  100% { transform: translateY(0)   scale(1); }
+}
+
+@keyframes lineFloatWave {
+  0%   { transform: translate(0, 0)      skewX(0deg); }
+  50%  { transform: translate(3px, -10px) skewX(6deg); }
+  100% { transform: translate(0, 0)      skewX(0deg); }
+}
+
+@keyframes lineFloatTilt {
+  0%   { transform: translateY(0) rotate(-6deg); }
+  50%  { transform: translateY(-10px) rotate(6deg); }
+  100% { transform: translateY(0) rotate(-6deg); }
+}
+
+/* 모양들 (곡선 + 지그재그 + shard 등) */
+.line-shape-curve {
+  clip-path: polygon(
+    40% 0%,
+    60% 4%,
+    70% 20%,
+    50% 38%,
+    64% 56%,
+    50% 72%,
+    60% 88%,
+    40% 100%,
+    30% 84%,
+    44% 66%,
+    32% 48%,
+    44% 30%,
+    30% 16%
+  );
+}
+
+.line-shape-zigzag {
+  clip-path: polygon(
+    60% 0%,
+    70% 12%,
+    40% 24%,
+    68% 36%,
+    38% 48%,
+    66% 60%,
+    36% 72%,
+    64% 84%,
+    34% 96%,
+    24% 84%,
+    50% 70%,
+    28% 58%,
+    54% 46%,
+    26% 34%,
+    52% 22%,
+    24% 10%
+  );
+}
+
+.line-shape-shard {
+  clip-path: polygon(
+    50% 0%,
+    76% 18%,
+    60% 44%,
+    82% 64%,
+    52% 100%,
+    30% 64%,
+    44% 44%,
+    24% 18%
+  );
+}
+
+.line-shape-arc {
+  clip-path: polygon(
+    50% 0%,
+    68% 10%,
+    80% 26%,
+    78% 44%,
+    66% 62%,
+    50% 72%,
+    34% 62%,
+    22% 44%,
+    20% 26%,
+    32% 10%
+  );
+}
+
+.line-shape-spark {
+  clip-path: polygon(
+    50% 0%,
+    60% 16%,
+    80% 20%,
+    64% 36%,
+    70% 56%,
+    50% 48%,
+    30% 56%,
+    36% 36%,
+    20% 20%,
+    40% 16%
+  );
+}
+
+/* 색들 (fruit랑 톤 맞추면서 선형용 팔레트) */
+.line-color-mint {
+  background: linear-gradient(to bottom, #e8fff8, #49ffd7);
+}
+
+.line-color-blue {
+  background: linear-gradient(to bottom, #e6f0ff, #6aa4ff);
+}
+
+.line-color-purple {
+  background: linear-gradient(to bottom, #f5e8ff, #b979ff);
+}
+
+.line-color-orange {
+  background: linear-gradient(to bottom, #fff0de, #ff9c52);
+}
+
+.line-color-pink {
+  background: linear-gradient(to bottom, #ffe7f6, #ff72c2);
+}
+
+/* ========================= */
+/* CORE를 감싸는 스프링 라인 */
+/* ========================= */
+
+.coil {
+  position: absolute;
+  top: -10px;
   left: 50%;
-  width: 10px;
-  height: 10px;
-  transform: translate(-50%, -50%);
-  border-radius: 50%;
-  background: radial-gradient(circle at center, #b2e0ff 0, #3ad0ff 60%);
+  width: 100px;
+  height: 200px;
+  transform: translateX(-50%);
+  z-index: 1; /* core보다 뒤에 */
+  opacity: 0;
+
+  /* 살짝 투명한 네온 느낌 */
+  filter: drop-shadow(0 0 10px rgba(140, 255, 245, 0.75));
 }
 
-/* footer */
+.coil path {
+  fill: none;
+  stroke: rgba(190, 255, 255, 0.9);
+  stroke-width: 5.2;
+  stroke-linecap: round;
+
+  /* 선이 점점 그려지는 느낌 */
+  stroke-dasharray: 300;
+  stroke-dashoffset: 300;
+  animation: coilDraw 5s ease-in-out infinite alternate;
+}
+
+/* 오른쪽은 좌우 반전 + 살짝 투명 */
+.coil-right {
+  transform: translateX(-50%) scaleX(-1);
+  opacity: 0;
+}
+
+/* 코어보다 앞에 있는 odd, fruit, line은 z-index 1 이상이면 좋아 */
+.core,
+.sprout,
+.branch,
+.odd,
+.fruit,
+.line {
+  position: absolute;
+  z-index: 1;
+}
+
+/* 스프링이 나타나는 구간 (7단계 이후부터) */
+.stage-7 .coil,
+.stage-8 .coil,
+.stage-9 .coil {
+  opacity: 0.8;
+}
+
+/* 오른쪽은 조금 더 약하게 */
+.stage-7 .coil-right,
+.stage-8 .coil-right,
+.stage-9 .coil-right {
+  opacity: 0.6;
+}
+
+@keyframes coilDraw {
+  0% {
+    stroke-dashoffset: 340;
+  }
+  40% {
+    stroke-dashoffset: 220;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* =========================================
+   FOOTER
+========================================= */
 .footer {
   display: flex;
   flex-direction: column;
   gap: 4px;
+
   font-size: 15px;
   color: var(--text-sub);
 }
@@ -261,44 +652,63 @@ body {
 .message {
   margin-top: 2px;
   line-height: 1.4;
+color: #49ffd7;
 }
 
 .hint {
-  margin-top: 2px;
   opacity: 0.7;
+  margin-top: 2px;
 }
 
-/* ========================= */
-/* 단계별 스타일 */
-/* ========================= */
-
-/* stage-0: seed */
+/* =========================================
+   STAGE 0 — SEED (완전 단정)
+========================================= */
 .stage-0 .core {
-  height: 26px;
+  height: 28px;
+  width: 24px;
+  background: radial-gradient(circle at top, #fff3c5 0, #e8c860 70%);
 }
 
-/* stage-1: 발아 */
+.stage-0 .sprout,
+.stage-0 .branch,
+.stage-0 .odd,
+.stage-0 .fruit {
+  opacity: 0 !important;
+}
+
+
+
+/* =========================================
+   STAGE 1 — 발아
+========================================= */
 .stage-1 .core {
   height: 60px;
-  background: linear-gradient(to bottom, #fdf7cb, #9cffd0);
+  width: 28px;
+  background: linear-gradient(to bottom, #fdf7cb, #b7ffd9);
+  box-shadow:
+    0 0 16px rgba(160, 255, 210, 0.7),
+    0 0 0 1px rgba(0, 0, 0, 0.3);
 }
 
 .stage-1 .sprout {
-  transform: translateX(-50%) scale(1);
   opacity: 1;
+  transform: translateX(-50%) scale(1);
 }
 
-/* stage-2: 작은 나무 */
+/* =========================================
+   STAGE 2 — 작은 나무
+========================================= */
 .stage-2 .core {
   height: 120px;
-  background: linear-gradient(to bottom, #d4ffe9, #72f4a4);
+  width: 32px;
+  background: linear-gradient(to bottom, #d2ffee, #72f4a4);
   box-shadow:
     0 0 20px rgba(129, 255, 197, 0.8),
     0 0 0 1px rgba(0, 0, 0, 0.3);
 }
 
 .stage-2 .sprout {
-  transform: translateX(-50%) scale(1.1);
+  transform: translateX(-50%) scale(1.15);
   opacity: 1;
 }
 
@@ -306,16 +716,21 @@ body {
   opacity: 0.85;
 }
 
-/* stage-3: 가지 기형적으로 확장 */
+/* =========================================
+   STAGE 3 — 가지 성장
+========================================= */
 .stage-3 .core {
   height: 150px;
+  width: 36px;
   background: linear-gradient(to bottom, #e4fff5, #3de287);
+  box-shadow:
+    0 0 24px rgba(102, 255, 207, 0.9),
+    0 0 0 1px rgba(0, 0, 0, 0.3);
 }
 
 .stage-3 .branch-left {
   transform: rotate(-36deg) scale(1.1) translateX(-4px);
 }
-
 .stage-3 .branch-right {
   transform: rotate(32deg) scale(1.1) translateX(4px);
 }
@@ -324,71 +739,873 @@ body {
   opacity: 1;
 }
 
-/* stage-4: 이상한 존재로 변이 시작 */
+/* =========================================
+   STAGE 4 — 변이 시작 (Variant 0~4)
+   300~599 영역
+========================================= */
+
+/* 공통 */
 .stage-4 .core {
   height: 170px;
-  border-radius: 40px;
-  background: linear-gradient(to bottom, #f7f2ff, #3ceccd);
+  width: 40px;
   box-shadow:
-    0 0 26px rgba(151, 255, 222, 0.9),
+    0 0 28px rgba(151, 255, 222, 0.9),
     0 0 0 1px rgba(0, 0, 0, 0.3);
 }
 
-.stage-4 .branch-left {
-  transform: rotate(-46deg) scale(1.15) translate(-6px, -6px);
-}
-
-.stage-4 .branch-right {
-  transform: rotate(42deg) scale(1.15) translate(6px, -6px);
-}
-
-.stage-4 .odd-orb {
+.stage-4 .branch {
   opacity: 1;
-  transform: scale(1) translateY(0);
-  box-shadow: 0 0 22px rgba(255, 119, 179, 0.8);
+  transform: scale(1.15);
 }
 
-/* stage-5: 완전 다른 존재 */
+/* ---------------------------
+   VARIANT 0 — 기본 부드러운 곡선
+--------------------------- */
+.stage-4.variant-0 .core {
+  background: linear-gradient(to bottom, #f7f2ff, #6dfbd8);
+  clip-path: polygon(
+    50% 0%,
+    60% 5%,
+    65% 12%,
+    70% 25%,
+    68% 40%,
+    62% 55%,
+    50% 100%,
+    38% 55%,
+    32% 40%,
+    30% 25%,
+    35% 12%,
+    40% 5%
+  );
+}
+
+/* ---------------------------
+   VARIANT 1 — 울퉁불퉁 organic
+--------------------------- */
+.stage-4.variant-1 .core {
+  background: linear-gradient(to bottom, #f2eaff, #56ffd2);
+  clip-path: polygon(
+    50% 0%,
+    62% 8%,
+    70% 20%,
+    66% 36%,
+    72% 54%,
+    60% 78%,
+    50% 100%,
+    40% 78%,
+    28% 54%,
+    34% 36%,
+    30% 20%,
+    38% 8%
+  );
+}
+
+/* ---------------------------
+   VARIANT 2 — 지그재그
+--------------------------- */
+.stage-4.variant-2 .core {
+  background: linear-gradient(to bottom, #fdfcff, #5dffe0);
+  clip-path: polygon(
+    50% 0%,
+    58% 8%,
+    42% 20%,
+    60% 32%,
+    40% 44%,
+    58% 56%,
+    42% 68%,
+    60% 80%,
+    50% 100%
+  );
+}
+
+/* ---------------------------
+   VARIANT 3 — 고양이 귀 실루엣(힌트형)
+--------------------------- */
+.stage-4.variant-3 .core {
+  background: linear-gradient(to bottom, #eafaff, #59ffe2);
+  clip-path: polygon(
+    45% 0%, 35% 14%, 35% 20%,
+    50% 10%,
+    65% 20%, 65% 14%, 55% 0%,
+    60% 28%, 70% 44%,
+    60% 62%, 50% 100%,
+    40% 62%, 30% 44%,
+    40% 28%
+  );
+}
+
+/* ---------------------------
+   VARIANT 4 — 랜덤 다각형 느낌
+--------------------------- */
+.stage-4.variant-4 .core {
+  background: linear-gradient(to bottom, #fdfcff, #72ffe7);
+  clip-path: polygon(
+    50% 0%,
+    68% 8%,
+    74% 24%,
+    62% 36%,
+    76% 48%,
+    65% 70%,
+    50% 100%,
+    35% 70%,
+    24% 48%,
+    38% 36%,
+    26% 24%,
+    32% 8%
+  );
+}
+
+/* =========================================
+   STAGE 4 — FRUIT APPEARANCES
+   (1~3개만)
+========================================= */
+
+.stage-4 .fruit {
+  opacity: 1;
+  animation-duration: 4s;
+  animation-iteration-count: infinite;
+}
+
+.stage-4 .fruit-1 {
+  top: 20%;
+  left: -10%;
+  animation-name: floatSoft;
+}
+.stage-4 .fruit-2 {
+  top: 40%;
+  right: -12%;
+  animation-name: floatCircle;
+}
+.stage-4 .fruit-3 {
+  top: 60%;
+  left: -6%;
+  animation-name: floatWide;
+}
+
+
+
+
+/* =========================================
+   STAGE 5 — 600~699
+   코어가 본격 기하학 변형되는 시점
+   Variant 0~4 (총 5종)
+========================================= */
+
 .stage-5 .core {
   height: 190px;
-  border-radius: 60px;
+  width: 46px;
+
   background: conic-gradient(
     from 210deg,
-    #fdfcff,
+    #fbfaff,
     #a8ffed,
     #ffb4e4,
     #9cd4ff,
+    #fbfaff
+  );
+
+  box-shadow:
+    0 0 36px rgba(180, 255, 237, 0.95),
+    0 0 0 2px rgba(10, 18, 32, 0.5);
+}
+
+/* ---------------------------
+   VARIANT 0 — 별 모양 흐릿 실루엣
+--------------------------- */
+.stage-5.variant-0 .core {
+  clip-path: polygon(
+    50% 0%,
+    60% 18%,
+    78% 22%,
+    64% 36%,
+    70% 54%,
+    50% 46%,
+    30% 54%,
+    36% 36%,
+    22% 22%,
+    40% 18%
+  );
+}
+
+/* ---------------------------
+   VARIANT 1 — 네모·삼각 결합 폼
+--------------------------- */
+.stage-5.variant-1 .core {
+  clip-path: polygon(
+    45% 0%,
+    55% 0%,
+    72% 18%,
+    72% 36%,
+    60% 48%,
+    72% 60%,
+    72% 80%,
+    55% 100%,
+    45% 100%,
+    28% 80%,
+    28% 60%,
+    40% 48%,
+    28% 36%,
+    28% 18%
+  );
+}
+
+/* ---------------------------
+   VARIANT 2 — 랜덤 패스 느낌 (비대칭)
+--------------------------- */
+.stage-5.variant-2 .core {
+  clip-path: polygon(
+    50% 0%,
+    70% 6%,
+    78% 22%,
+    60% 34%,
+    74% 46%,
+    65% 62%,
+    80% 78%,
+    60% 100%,
+    40% 100%,
+    20% 78%,
+    35% 62%,
+    26% 46%,
+    40% 34%,
+    22% 22%,
+    30% 6%
+  );
+}
+
+/* ---------------------------
+   VARIANT 3 — 둥근 곡선 + 귀 힌트
+--------------------------- */
+.stage-5.variant-3 .core {
+  clip-path: polygon(
+    45% 0%,
+    35% 14%,
+    35% 22%,
+    50% 12%,
+    65% 22%,
+    65% 14%,
+    55% 0%,
+    70% 32%,
+    76% 48%,
+    64% 76%,
+    50% 100%,
+    36% 76%,
+    24% 48%,
+    30% 32%
+  );
+}
+
+/* ---------------------------
+   VARIANT 4 — 유체 blob 느낌
+--------------------------- */
+.stage-5.variant-4 .core {
+  clip-path: polygon(
+    50% 0%,
+    66% 10%,
+    72% 26%,
+    70% 40%,
+    78% 56%,
+    68% 72%,
+    50% 100%,
+    32% 72%,
+    22% 56%,
+    30% 40%,
+    28% 26%,
+    34% 10%
+  );
+}
+
+/* =========================================
+   STAGE 5 — FRUITS (2~4개)
+========================================= */
+.stage-5 .fruit {
+  opacity: 1;
+  animation-duration: 4.6s;
+  animation-iteration-count: infinite;
+}
+
+.stage-5 .fruit-1 {
+  left: -14%; top: 18%;
+  animation-name: floatSoft;
+}
+.stage-5 .fruit-2 {
+  right: -16%; top: 34%;
+  animation-name: floatCircle;
+}
+.stage-5 .fruit-3 {
+  left: -10%; top: 56%;
+  animation-name: floatWide;
+}
+.stage-5 .fruit-4 {
+  right: -6%; top: 72%;
+  animation-name: floatCircle;
+}
+
+/* =========================================
+   STAGE 6 — 700~799
+   코어가 완전히 형태변형하는 단계
+   Variant 0~4
+========================================= */
+
+.stage-6 .core {
+  height: 200px;
+  width: 54px;
+
+  background: conic-gradient(
+    from 180deg,
+    #eaffff,
+    #c0ffe8,
+    #ffaef2,
+    #a2d2ff,
+    #eaffff
+  );
+
+  box-shadow:
+    0 0 40px rgba(180, 255, 240, 0.95),
+    0 0 0 2px rgba(10, 18, 32, 0.6);
+}
+
+/* ---------------------------
+   VARIANT 0 — 물결 스플라인
+--------------------------- */
+.stage-6.variant-0 .core {
+  clip-path: polygon(
+    52% 0%,
+    60% 6%,
+    48% 18%,
+    64% 30%,
+    44% 42%,
+    60% 54%,
+    46% 66%,
+    64% 78%,
+    50% 100%
+  );
+}
+
+/* ---------------------------
+   VARIANT 1 — S자 나선형 힌트
+--------------------------- */
+.stage-6.variant-1 .core {
+  clip-path: polygon(
+    50% 0%,
+    68% 8%,
+    60% 26%,
+    38% 34%,
+    54% 44%,
+    72% 54%,
+    56% 70%,
+    32% 78%,
+    44% 90%,
+    50% 100%
+  );
+}
+
+/* ---------------------------
+   VARIANT 2 — 지그재그 큰 톱니
+--------------------------- */
+.stage-6.variant-2 .core {
+  clip-path: polygon(
+    52% 0%,
+    61% 12%,
+    43% 22%,
+    60% 34%,
+    42% 48%,
+    60% 58%,
+    40% 72%,
+    56% 84%,
+    50% 100%
+  );
+}
+
+/* ---------------------------
+   VARIANT 3 — ㄱㄴㄷ 꺾임 (기괴)
+--------------------------- */
+.stage-6.variant-3 .core {
+  clip-path: polygon(
+    48% 0%,
+    70% 10%,
+    50% 24%,
+    72% 36%,
+    40% 48%,
+    68% 60%,
+    42% 76%,
+    60% 88%,
+    50% 100%
+  );
+}
+
+/* ---------------------------
+   VARIANT 4 — 분기형 나무 형태
+--------------------------- */
+.stage-6.variant-4 .core {
+  clip-path: polygon(
+    50% 0%,
+    62% 10%,
+    68% 26%,
+    60% 40%,
+    74% 54%,
+    64% 70%,
+    50% 100%,
+    36% 70%,
+    26% 54%,
+    40% 40%,
+    32% 26%,
+    38% 10%
+  );
+}
+
+/* =========================================
+   STAGE 6 — FRUITS (3~5개)
+========================================= */
+
+.stage-6 .fruit {
+  opacity: 1;
+  animation-duration: 5s;
+  animation-iteration-count: infinite;
+}
+
+.stage-6 .fruit-1 {
+  left: -16%; top: 16%;
+  animation-name: floatSoft;
+}
+.stage-6 .fruit-2 {
+  right: -18%; top: 28%;
+  animation-name: floatWide;
+}
+.stage-6 .fruit-3 {
+  left: -12%; top: 42%;
+  animation-name: floatCircle;
+}
+.stage-6 .fruit-4 {
+  right: -10%; top: 58%;
+  animation-name: floatSoft;
+}
+.stage-6 .fruit-5 {
+  left: -8%; top: 76%;
+  animation-name: floatWide;
+}
+
+
+/* =========================================
+   STAGE 7 — 800~899
+   기묘한 유기체 같은 형태 변형
+   Variant 0~4
+========================================= */
+
+.stage-7 .core {
+  height: 214px;
+  width: 60px;
+
+  background: conic-gradient(
+    from 150deg,
+    #fdfcff,
+    #d2ffe8,
+    #ffcef5,
+    #bde0ff,
     #fdfcff
   );
+
   box-shadow:
-    0 0 34px rgba(180, 255, 237, 0.95),
-    0 0 0 2px rgba(10, 18, 32, 0.7);
+    0 0 44px rgba(200, 255, 245, 0.9),
+    0 0 0 2px rgba(12, 18, 28, 0.7);
 }
 
-.stage-5 .branch-left {
-  transform: rotate(-65deg) scale(1.2) translate(-8px, -10px);
+/* ---------------------------
+   VARIANT 0 — Jelly Blob
+--------------------------- */
+.stage-7.variant-0 .core {
+  clip-path: polygon(
+    50% 0%,
+    68% 10%,
+    78% 26%,
+    74% 44%,
+    86% 58%,
+    74% 78%,
+    60% 90%,
+    50% 100%,
+    40% 90%,
+    26% 78%,
+    14% 58%,
+    26% 44%,
+    22% 26%,
+    32% 10%
+  );
 }
 
-.stage-5 .branch-right {
-  transform: rotate(65deg) scale(1.2) translate(8px, -10px);
+/* ---------------------------
+   VARIANT 1 — 분기된 생물체
+--------------------------- */
+.stage-7.variant-1 .core {
+  clip-path: polygon(
+    50% 0%,
+    62% 10%,
+    70% 30%,
+    56% 44%,
+    68% 58%,
+    54% 72%,
+    75% 82%,
+    60% 100%,
+    40% 100%,
+    25% 82%,
+    46% 72%,
+    32% 58%,
+    44% 44%,
+    30% 30%,
+    38% 10%
+  );
 }
 
-.stage-5 .odd-orb,
-.stage-5 .odd-eye {
+/* ---------------------------
+   VARIANT 2 — 기계 느낌 찌그러진 구조
+--------------------------- */
+.stage-7.variant-2 .core {
+  clip-path: polygon(
+    50% 0%,
+    66% 6%,
+    82% 20%,
+    70% 36%,
+    78% 52%,
+    62% 62%,
+    74% 76%,
+    60% 100%,
+    40% 100%,
+    26% 76%,
+    38% 62%,
+    22% 52%,
+    30% 36%,
+    18% 20%,
+    34% 6%
+  );
+}
+
+/* ---------------------------
+   VARIANT 3 — 얼굴 힌트(눈 위치 암시)
+--------------------------- */
+.stage-7.variant-3 .core {
+  clip-path: polygon(
+    48% 0%,
+    36% 12%,
+    34% 20%,
+    48% 14%,
+    62% 20%,
+    60% 12%,
+    52% 0%,
+    68% 28%,
+    72% 44%,
+    58% 68%,
+    50% 92%,
+    42% 68%,
+    28% 44%,
+    32% 28%
+  );
+}
+
+/* ---------------------------
+   VARIANT 4 — 예술적 기하학 패턴
+--------------------------- */
+.stage-7.variant-4 .core {
+  clip-path: polygon(
+    50% 0%,
+    72% 16%,
+    80% 32%,
+    70% 48%,
+    78% 66%,
+    66% 84%,
+    50% 100%,
+    34% 84%,
+    22% 66%,
+    30% 48%,
+    20% 32%,
+    28% 16%
+  );
+}
+
+/* =========================================
+   STAGE 7 — FRUITS (4~6개)
+========================================= */
+.stage-7 .fruit {
+  opacity: 1;
+  animation-duration: 5.4s;
+  animation-iteration-count: infinite;
+}
+
+.stage-7 .fruit-1 {
+  left: -18%; top: 14%;
+  animation-name: floatCircle;
+}
+.stage-7 .fruit-2 {
+  right: -20%; top: 32%;
+  animation-name: floatSoft;
+}
+.stage-7 .fruit-3 {
+  left: -12%; top: 50%;
+  animation-name: floatWide;
+}
+.stage-7 .fruit-4 {
+  right: -10%; top: 64%;
+  animation-name: floatCircle;
+}
+.stage-7 .fruit-5 {
+  left: -6%; top: 78%;
+  animation-name: floatSoft;
+}
+.stage-7 .fruit-6 {
+  right: -4%; top: 88%;
+  animation-name: floatWide;
+}
+
+/* =========================================
+   STAGE 8 — 900~999
+   동물 힌트 + 기묘함 극대화 (Variant 0~4)
+========================================= */
+
+.stage-8 .core {
+  height: 228px;
+  width: 64px;
+
+  background: conic-gradient(
+    from 130deg,
+    #ffffff,
+    #d6fff6,
+    #ffc7f5,
+    #c6ddff,
+    #ffffff
+  );
+
+  box-shadow:
+    0 0 50px rgba(210, 255, 250, 1),
+    0 0 0 2px rgba(10, 20, 30, 0.75);
+}
+
+/* ---------------------------
+   VARIANT 0 — 여우 귀·턱선 힌트
+--------------------------- */
+.stage-8.variant-0 .core {
+  clip-path: polygon(
+    50% 0%,
+
+    /* 귀 */
+    38% 12%, 34% 24%, 46% 14%,
+    54% 14%, 66% 24%, 62% 12%,
+
+    /* 얼굴형 힌트 */
+    72% 34%,
+    76% 52%,
+    68% 72%,
+    50% 100%,
+    32% 72%,
+    24% 52%,
+    28% 34%
+  );
+}
+
+/* ---------------------------
+   VARIANT 1 — 고양이 실루엣 느낌
+--------------------------- */
+.stage-8.variant-1 .core {
+  clip-path: polygon(
+    50% 0%,
+    36% 14%,
+    34% 22%,
+    48% 12%,
+    62% 22%,
+    60% 14%,
+
+    70% 32%,
+    76% 48%,
+    68% 70%,
+    50% 100%,
+    32% 70%,
+    24% 48%,
+    30% 32%
+  );
+}
+
+/* ---------------------------
+   VARIANT 2 — 강아지 귀 힌트 + 둥글 실루엣
+--------------------------- */
+.stage-8.variant-2 .core {
+  clip-path: polygon(
+    50% 0%,
+    32% 18%,
+    28% 26%,
+    46% 18%,
+    54% 18%,
+    72% 26%,
+    68% 18%,
+
+    76% 44%,
+    70% 64%,
+    52% 100%,
+    48% 100%,
+    30% 64%,
+    24% 44%
+  );
+}
+
+/* ---------------------------
+   VARIANT 3 — 두 눈 힌트(직접적이지 않음)
+--------------------------- */
+.stage-8.variant-3 .core {
+  clip-path: polygon(
+    50% 0%,
+    64% 10%,
+    76% 22%,
+    72% 32%,
+    66% 28%,
+    56% 34%,
+
+    44% 34%,
+    34% 28%,
+    28% 32%,
+    24% 22%,
+    36% 10%,
+
+    26% 44%,
+    32% 70%,
+    50% 100%,
+    68% 70%,
+    74% 44%
+  );
+}
+
+/* ---------------------------
+   VARIANT 4 — 고대 신화적 형상
+--------------------------- */
+.stage-8.variant-4 .core {
+  clip-path: polygon(
+    50% 0%,
+    72% 16%,
+    64% 28%,
+    78% 44%,
+    70% 56%,
+    82% 72%,
+    60% 100%,
+    40% 100%,
+    18% 72%,
+    30% 56%,
+    22% 44%,
+    36% 28%,
+    28% 16%
+  );
+}
+
+/* =========================================
+   STAGE 8 — FRUITS (5~6개)
+========================================= */
+.stage-8 .fruit {
+  opacity: 1;
+  animation-duration: 6s;
+  animation-iteration-count: infinite;
+}
+
+.stage-8 .fruit-1 { left: -18%; top: 12%; animation-name: floatCircle; }
+.stage-8 .fruit-2 { right: -20%; top: 24%; animation-name: floatWide; }
+.stage-8 .fruit-3 { left: -14%; top: 42%; animation-name: floatSoft; }
+.stage-8 .fruit-4 { right: -12%; top: 60%; animation-name: floatCircle; }
+.stage-8 .fruit-5 { left: -8%; top: 76%; animation-name: floatWide; }
+.stage-8 .fruit-6 { right: -4%; top: 90%; animation-name: floatSoft; }
+
+/* =========================================
+   STAGE 9 — 1000 (최종 형태)
+   매우 단정하고 정적인 실루엣
+========================================= */
+
+.stage-9 .core {
+  height: 240px;
+  width: 66px;
+
+  background: linear-gradient(to bottom, #ffffff, #e8fffa);
+
+  clip-path: polygon(
+    50% 0%,
+    60% 12%,
+    72% 32%,
+    62% 56%,
+    70% 78%,
+    50% 100%,
+    30% 78%,
+    38% 56%,
+    28% 32%,
+    40% 12%
+  );
+
+  box-shadow:
+    0 0 80px rgba(250, 255, 255, 0.9),
+    0 0 0 3px rgba(12, 20, 30, 0.4);
+}
+
+/* STAGE 9 — odd/fruit도 다 같이 폭발하듯 등장 */
+.stage-9 .odd,
+.stage-9 .fruit {
   opacity: 1;
 }
 
-.stage-5 .odd-orb {
-  transform: scale(1.05) translateY(-4px);
+/* 엔딩에서 조금 더 강한 글로우 */
+.stage-9 .odd {
+  filter: drop-shadow(0 0 18px rgba(255, 190, 240, 0.9));
 }
 
-.stage-5 .odd-eye {
-  transform: translateY(-4px);
+.stage-9 .fruit {
+  animation-duration: 4.2s;
+  animation-iteration-count: infinite;
+}
+/* STAGE 9 — odd/fruit도 다 같이 폭발하듯 등장 */
+.stage-9 .odd,
+.stage-9 .fruit {
+  opacity: 1;
 }
 
-/* mobile fine-tune */
-@media (max-width: 400px) {
-  .canvas {
-    padding-inline: 16px;
-  }
+/* 엔딩에서 odd는 더 강한 글로우 */
+.stage-9 .odd {
+  filter: drop-shadow(0 0 18px rgba(255, 190, 240, 0.9));
 }
+
+/* 엔딩에서 fruit는 조금 더 크고 빠르게 */
+.stage-9 .fruit {
+  width: 22px;
+  height: 22px;
+  animation-duration: 3.6s;
+  animation-iteration-count: infinite;
+}
+
+/* final에서 fruit들을 코어 주변에 꽉 채우기 */
+.stage-9 .fruit-1 {
+  top: 18%;
+  left: -16%;
+  animation-name: floatCircle;
+}
+.stage-9 .fruit-2 {
+  top: 30%;
+  right: -18%;
+  animation-name: floatWide;
+}
+.stage-9 .fruit-3 {
+  top: 46%;
+  left: -12%;
+  animation-name: floatSoft;
+}
+.stage-9 .fruit-4 {
+  top: 58%;
+  right: -10%;
+  animation-name: floatCircle;
+}
+.stage-9 .fruit-5 {
+  top: 72%;
+  left: -6%;
+  animation-name: floatWide;
+}
+.stage-9 .fruit-6 {
+  top: 86%;
+  right: -4%;
+  animation-name: floatSoft;
+}
+
+@keyframes finalGlow {
+  0%   { box-shadow: 0 0 40px rgba(250,255,255,0.6), 0 0 0 3px rgba(12,20,30,0.4); }
+  50%  { box-shadow: 0 0 90px rgba(250,255,255,1),   0 0 0 3px rgba(12,20,30,0.2); }
+  100% { box-shadow: 0 0 40px rgba(250,255,255,0.6), 0 0 0 3px rgba(12,20,30,0.4); }
+}
+.stage-9 .line {
+  opacity: 1;
+}
+

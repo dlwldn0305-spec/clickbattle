@@ -2,49 +2,68 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <title>Unknown Seed</title>
+  <title>Unknown Seed – Evolved Edition</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="./src/style.css" />
 </head>
+
 <body>
   <div class="canvas">
 
     <header class="header">
       <h1 class="title">Unknown Seed</h1>
-      <p class="subtitle">그 끝엔 무엇이 있을까?</p>
+      <p class="subtitle">넌 뭐가 되고싶어?</p>
     </header>
 
-    <main class="grow-area" id="growArea">
+    <main id="growArea" class="grow-area">
       <div class="tree-wrap">
-        <div id="tree" class="tree stage-0">
+                <div id="tree" class="tree stage-0 variant-0">
           <span class="core"></span>
           <span class="sprout"></span>
           <span class="branch branch-left"></span>
           <span class="branch branch-right"></span>
-          <span class="odd odd-orb"></span>
-          <span class="odd odd-eye"></span>
+
+          <span class="odd odd-1"></span>
+          <span class="odd odd-2"></span>
+          <span class="odd odd-3"></span>
+
+          <span class="fruit fruit-1"></span>
+          <span class="fruit fruit-2"></span>
+          <span class="fruit fruit-3"></span>
+          <span class="fruit fruit-4"></span>
+          <span class="fruit fruit-5"></span>
+          <span class="fruit fruit-6"></span>
+
+          <!-- 새로 추가되는 선형 오브젝트들 -->
+          <span class="line line-1"></span>
+          <span class="line line-2"></span>
+          <span class="line line-3"></span>
+          <span class="line line-4"></span>
+          <span class="line line-5"></span>
+
+       
+                  <div class="ground"></div>
+
         </div>
-        <div class="ground"></div>
+
+
+        <!-- 땅 -->
       </div>
     </main>
 
     <footer class="footer">
       <div class="info-row">
         <div class="counter">
-          total clicks
-          <span id="clickCount">0</span>
+          total clicks <span id="clickCount">0</span>
         </div>
+
         <div class="stage-label">
-          stage
-          <span id="stageLabel">seed</span>
+          stage <span id="stageLabel">seed</span>
         </div>
       </div>
-      <p id="message" class="message">
-        씨앗을 눌러서 깨워봐요!
-      </p>
-      <p class="hint">
-        화면 아무 곳이나 클릭해도 자란답니다.
-      </p>
+
+      <p id="message" class="message">씨앗을 눌러서 깨워봐요!</p>
+      <p class="hint">화면 아무 곳이나 클릭해도 자라요.</p>
     </footer>
 
   </div>

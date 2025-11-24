@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>Unknown Seed</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/src/style.css" />
+</head>
+<body>
+  <div class="canvas">
+
+    <header class="header">
+      <h1 class="title">Unknown Seed</h1>
+      <p class="subtitle">그 끝엔 무엇이 있을까?</p>
+    </header>
+
+    <main class="grow-area" id="growArea">
+      <div class="tree-wrap">
+        <div id="tree" class="tree stage-0">
+          <span class="core"></span>
+          <span class="sprout"></span>
+          <span class="branch branch-left"></span>
+          <span class="branch branch-right"></span>
+          <span class="odd odd-orb"></span>
+          <span class="odd odd-eye"></span>
+        </div>
+        <div class="ground"></div>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="info-row">
+        <div class="counter">
+          total clicks
+          <span id="clickCount">0</span>
+        </div>
+        <div class="stage-label">
+          stage
+          <span id="stageLabel">seed</span>
+        </div>
+      </div>
+      <p id="message" class="message">
+        씨앗을 눌러서 깨워봐요!
+      </p>
+      <p class="hint">
+        화면 아무 곳이나 클릭해도 자란답니다.
+      </p>
+    </footer>
+
+  </div>
+
+  <script src="/src/main.js"></script>
+</body>
+</html>

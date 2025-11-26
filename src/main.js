@@ -1,4 +1,3 @@
-ClickBattle.init("tomo"); // 자기 닉네임
 
 // ========================================================
 // ELEMENTS
@@ -260,7 +259,6 @@ function updateOddAndFruit(stageIndex) {
 // ========================================================
 function handleClick() {
   // 클릭 집계는 여기서만
-  ClickBattle.recordClick();
 
   count++;
   clickCountEl.textContent = count;
